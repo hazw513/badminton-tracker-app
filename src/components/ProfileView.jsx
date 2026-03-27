@@ -1,6 +1,9 @@
 import { useState, useMemo } from "react"
+import { GYM_WORKOUTS } from "../data/gymWorkouts"
 import { WORKOUT_TYPES } from "../data/weekTemplate"
 import { getMondayOfDate, getWeekRangeLabel, parseDateKey, toDateKey } from "../utils/dateHelpers"
+
+const GYM_WORKOUT_KEYS = Object.keys(GYM_WORKOUTS)
 
 function ScheduleEditor({ schedule, onSlotUpdate, onToggleSplit }) {
   return (
@@ -19,7 +22,13 @@ function ScheduleEditor({ schedule, onSlotUpdate, onToggleSplit }) {
               <div className="grid-two">
                 <div>
                   <label className="field-label small">AM Workout</label>
-                  <input className="input" value={slot.amWorkout} onChange={(e) => onSlotUpdate(index, { amWorkout: e.target.value })} placeholder="Workout name" />
+                  {slot.amType === "gym" ? (
+                    <select className="input" value={slot.amWorkout} onChange={(e) => onSlotUpdate(index, { amWorkout: e.target.value })}>
+                      {GYM_WORKOUT_KEYS.map((key) => <option key={key} value={key}>{GYM_WORKOUTS[key].title}</option>)}
+                    </select>
+                  ) : (
+                    <input className="input" value={slot.amWorkout} onChange={(e) => onSlotUpdate(index, { amWorkout: e.target.value })} placeholder="Workout name" />
+                  )}
                 </div>
                 <div>
                   <label className="field-label small">AM Type</label>
@@ -31,7 +40,13 @@ function ScheduleEditor({ schedule, onSlotUpdate, onToggleSplit }) {
               <div className="grid-two">
                 <div>
                   <label className="field-label small">PM Workout</label>
-                  <input className="input" value={slot.pmWorkout} onChange={(e) => onSlotUpdate(index, { pmWorkout: e.target.value })} placeholder="Workout name" />
+                  {slot.pmType === "gym" ? (
+                    <select className="input" value={slot.pmWorkout} onChange={(e) => onSlotUpdate(index, { pmWorkout: e.target.value })}>
+                      {GYM_WORKOUT_KEYS.map((key) => <option key={key} value={key}>{GYM_WORKOUTS[key].title}</option>)}
+                    </select>
+                  ) : (
+                    <input className="input" value={slot.pmWorkout} onChange={(e) => onSlotUpdate(index, { pmWorkout: e.target.value })} placeholder="Workout name" />
+                  )}
                 </div>
                 <div>
                   <label className="field-label small">PM Type</label>
@@ -45,7 +60,13 @@ function ScheduleEditor({ schedule, onSlotUpdate, onToggleSplit }) {
             <div className="grid-two">
               <div>
                 <label className="field-label small">Workout</label>
-                <input className="input" value={slot.workout} onChange={(e) => onSlotUpdate(index, { workout: e.target.value })} placeholder="Workout name" />
+                {slot.type === "gym" ? (
+                  <select className="input" value={slot.workout} onChange={(e) => onSlotUpdate(index, { workout: e.target.value })}>
+                    {GYM_WORKOUT_KEYS.map((key) => <option key={key} value={key}>{GYM_WORKOUTS[key].title}</option>)}
+                  </select>
+                ) : (
+                  <input className="input" value={slot.workout} onChange={(e) => onSlotUpdate(index, { workout: e.target.value })} placeholder="Workout name" />
+                )}
               </div>
               <div>
                 <label className="field-label small">Type</label>

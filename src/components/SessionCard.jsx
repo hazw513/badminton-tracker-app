@@ -1,6 +1,9 @@
 import { useState } from "react"
+import { GYM_WORKOUTS } from "../data/gymWorkouts"
 
-export default function SessionCard({ day, onUpdate, onOpenWorkout, hasWorkoutModal }) {
+const GYM_WORKOUT_KEYS = Object.keys(GYM_WORKOUTS)
+
+export default function SessionCard({ day, onUpdate, onOpenWorkout, hasWorkoutModal, onWorkoutChange }) {
   const [showRpeInfo, setShowRpeInfo] = useState(false)
 
   return (
@@ -67,6 +70,22 @@ export default function SessionCard({ day, onUpdate, onOpenWorkout, hasWorkoutMo
               <div className={`badge badge-${day.type}`}>{day.type}</div>
             </div>
           </div>
+
+          {day.type === "gym" && (
+            <div className="gym-selector row gap-8">
+              <select
+                value={day.workout}
+                onChange={(e) => onWorkoutChange(e.target.value)}
+                className="input"
+                style={{ flex: 1 }}
+              >
+                {GYM_WORKOUT_KEYS.map((key) => (
+                  <option key={key} value={key}>{GYM_WORKOUTS[key].title}</option>
+                ))}
+              </select>
+              <button type="button" className="btn" onClick={onOpenWorkout}>View Workout</button>
+            </div>
+          )}
 
           <label className="check-panel">
             <div>

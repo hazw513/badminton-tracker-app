@@ -168,6 +168,21 @@ export default function App() {
     })
   }
 
+  const changeGymWorkout = (workoutKey) => {
+    setData((prev) => {
+      const ws = getWeekSchedule(prev, selectedMonday)
+      const sched = ws[selectedSlot] || DEFAULT_SCHEDULE[selectedSlot]
+      const dayEntry = prev.days[selectedKey] || defaultDayEntry(sched)
+      const newDefault = [...(prev.defaultSchedule || DEFAULT_SCHEDULE)]
+      newDefault[selectedSlot] = { ...newDefault[selectedSlot], workout: workoutKey }
+      return {
+        ...prev,
+        days: { ...prev.days, [selectedKey]: { ...dayEntry, workout: workoutKey } },
+        defaultSchedule: newDefault,
+      }
+    })
+  }
+
   const updateProfile = (key, value) => {
     setData((prev) => ({ ...prev, profile: { ...prev.profile, [key]: value } }))
   }
@@ -223,6 +238,7 @@ export default function App() {
                 onUpdate={updateDay}
                 onOpenWorkout={() => setIsWorkoutModalOpen(true)}
                 hasWorkoutModal={!!gymWorkout}
+                onWorkoutChange={changeGymWorkout}
               />
 
               <DietCard diet={diet} isMatchDay={selectedDay.matchDay} />
